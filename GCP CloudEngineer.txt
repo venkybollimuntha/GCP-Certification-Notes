@@ -1,0 +1,108 @@
+  
+  **********************   Service Account ~~~ Role  ************************
+
+  Managed Instance group ---> target groups in ALB
+  Activity logs ---> CloudTrail logs
+  VM --> EC2
+  GCP --> S3
+  Service account --> Role
+
+
+
+1. GCloud command is Hierarchial 
+	gcloud compute instances list
+
+2. gcloud compute instances creat --manchine-type=n1-standard-4 venky-server-1
+	by default machine_type os n1-standard-1 where 1 is vCPUs
+
+3. gcloud container clusters create venky-instance --num-nodes=4
+
+4. gsutil mb (make bucket) command to create a new bucket in cloud storage
+
+5. NACL rules, the large will be the number, low will be the priority. the lowest priority will ensure that the other rules that match will apply.
+
+(Largest number should be selected to make the priority lowest)
+
+6. You can expand the IP address using command, but no command to decrease subnet length
+	gcloud compute networks subnets expand-ip-range venky-subnet --prefix-lenght=12
+
+7. GCR is a service used to store container images instead of code
+
+8. Cloud Source Repository --> like google own github service
+
+9. Cloud Pub/Sub is a fully managed real time messaging service that allows you to send and receive messages between independent applications at virtually any scale and even HIPPA compliance
+
+10. Cloud Run:  (Managed Serverless)
+--------------
+ Managed compute platform that automatically scales your stateless containers
+
+11. Cloud Function: (computing service that runs code in response to events)
+
+12. Master node is created by GKE automatically.
+
+13. Google Deploy Manager supports Jinja2 and Python
+
+
+Practice Test 2:
+---------------
+1. The service account user role (iam.ServiceAccountUser) for ALL service accounts in a PROJECT can be granted at the PROJECT level
+
+Service Account Role (iam.ServiceAccountUser) --> specific service --> Service ACCOUNT level
+
+2. The startup script is executed every time an instance is started.
+
+3. Reserves 4 IP address in a subnet
+	i) network address
+	ii) default gateway
+	iii) future use
+	iv) broadcast address
+
+4. You cannot clone/replicate the project in GCP
+
+5.  BigQuery --> RDS
+	BigTable --> NoSQL
+	Firestore --> NoSQL
+	Datastore --> NoSQL MongoDB
+	GCS --> only for Files
+
+
+6. BigQuery export option is available in Billing console
+
+7. SSL Proxy load balancing is a revers proxy load balancer
+
+8.  Regional --> Highest Expensive class
+	Standard --> costliest Storage, frequent access
+	Nearline --> data access was required on monthly basis
+	coldline --> accessing very rarely (once per 90 days)
+
+9. CloudSQL is used to launch MySQL or Postgres databse
+	Marketplace provides you with pre-built images which can be launched with just few clicks without any configuration
+
+10. API Library is Standard GCP library to interact Google services
+
+11. App Engine Standard --> ElasticBeanstalk (PHP, Python, Java, Ruby, Go, .NET, nodeJS)
+	App Engine Flexible --> ElasticBeanstalk (for all other languages)
+
+12. usin --no-promote flag while deploying new version of app will not automatically send traffic to new version
+
+13. Auto mode VPC can be converted to manual but vice versa is not possible
+
+14. GKE:
+--------
+	Pod : group of containers
+	StatefulSet: if a container dies, replacement one will have the same hostname and IP address
+	DaemonSet: making sure that one pod is always running on each node and scales automatically.
+	ReplicaSet: making sure that a desired number of pods are running.
+
+15. VM instances by default have read access to GCS
+
+16. while quering metadata of an instance you must provide header "Metadata-Flavor":"Google"
+
+17. If you want to change the machine type for cluster, you MUST create a new node pool in the same cluster and migrate the work load to the new pool
+
+18. 
+	
+
+
+
+

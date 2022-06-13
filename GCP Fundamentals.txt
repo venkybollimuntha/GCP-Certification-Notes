@@ -1,0 +1,77 @@
+1. Cloud run:
+-------------
+	- Opt choice for containerized applications development
+	- deployment on a fully managed serverless platform
+
+2. Cloud Function:
+-----------------
+	- Event driven
+	- designed for light weight functionalities instead of applications
+
+3. Google App Engine:
+---------------------
+	- Fully managed
+	- Serverless
+	- Highly Scalable
+
+4. Cloud Vision AI: (Face detection)
+-------------------
+	- Effective
+	- cost-efficient
+	- minimum maintenance
+
+5. Dataproc:
+------------
+	- Run solutions involving in Apache Spark and Presto at minimal cost
+
+6. Cloud Monitoring == Cloudwatch
+
+7. Secret Manager:
+-----------------
+	- Used to store API keys, passwords and certifications
+
+8. Cloud Key Management: (KMS Service)
+------------------------
+	- Manageing encryption keys
+
+9. Security Command Center:
+---------------------------
+	- Used to defend google cloud assests against threats
+
+10. Resource Hierarchy:
+-----------------------
+	- fine grained management and cost allocation
+
+11. Cloud interconnect:
+-----------------------
+	- Highly available and low latency connection to connect on-premise network
+
+12. Traffic Director:
+--------------------
+	- Global load balancing deployment across multi region VMs
+
+13. Firestore:
+--------------
+	- Serverless document database
+
+14. Datastream:
+---------------
+	- Performing replication and synchronization of data across various systems, including databases and storage accounts.
+
+15. Cloud Bigtable:
+--------------------
+	- High workload and perform analytics at fast pace.
+
+Monitoring Prod workloads
+
+16. Cloud Logging --> Real time management and analysis of logs
+
+17. Cloud Monitoring --> Monitor health, availability and performance of infrastructure, metrics
+
+18. Cloud Trace --> Production performance bottlenecks, application latency data
+
+19. Cloud Debugger --> Investigate the behaviour of code in production
+
+20. Serverless services --> Cloud Run, Workflow, App Engine
+
+21. 
