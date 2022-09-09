@@ -7,13 +7,49 @@
   GCP --> S3
   Service account --> Role
 
+  Deployment Manger == CloudFormation
+Cloud MarketPlace ==AWS Marketplace
+Cloud DNS == Route53
+Pub/Sub == Queue
+Dataflow == Glue
+Cloud Dataproc (Spark, Hadoop, Hive, BigData Jobs) == Glue and Athena
+
+Comput Engine == EC2
+App Engine == Elastic Beanstalk
+Kubernates Engine ==> ECS
+Cloud Storage == S3
+Databases == RDS
+BigQuery == RedShift
+
+
+IAM == IAM
+Organizations == Organizations
+VPC == VPC
+KMS == KMS
+
+
+Cloud Monitoring == Cloudwatch
+Cloud Logging == Cloudwatch
+Activity Logs == CloudTrail logs
+
+Cloud Functions == Lambda
+Cloud Run == AWS Fargate
+
+MIG == Target Groups
+LoadBalancer == LoadBlanacer
+
+gcloud == aws CLI command
+kubectl == ECR
+gsutil == S3
+cbt == Cloud BigTable
+
 
 
 1. GCloud command is Hierarchial 
 	gcloud compute instances list
 
-2. gcloud compute instances creat --manchine-type=n1-standard-4 venky-server-1
-	by default machine_type os n1-standard-1 where 1 is vCPUs
+2. gcloud compute instances create --manchine-type=n1-standard-4 venky-server-1
+	by default machine_type is n1-standard-1 where 1 is vCPUs
 
 3. gcloud container clusters create venky-instance --num-nodes=4
 
@@ -23,7 +59,7 @@
 
 (Largest number should be selected to make the priority lowest)
 
-6. You can expand the IP address using command, but no command to decrease subnet length
+6. You can expand the Subnet IP address using command, but no command to decrease subnet length
 	gcloud compute networks subnets expand-ip-range venky-subnet --prefix-lenght=12
 
 7. GCR is a service used to store container images instead of code
@@ -43,8 +79,8 @@
 13. Google Deploy Manager supports Jinja2 and Python
 
 
-Practice Test 2:
----------------
+Whiz Practice Test 1:
+---------------------
 1. The service account user role (iam.ServiceAccountUser) for ALL service accounts in a PROJECT can be granted at the PROJECT level
 
 Service Account Role (iam.ServiceAccountUser) --> specific service --> Service ACCOUNT level
@@ -59,16 +95,16 @@ Service Account Role (iam.ServiceAccountUser) --> specific service --> Service A
 
 4. You cannot clone/replicate the project in GCP
 
-5.  BigQuery --> RDS
+5.  BigQuery,CloudSQL,CloudSpanner --> RDS
 	BigTable --> NoSQL
-	Firestore --> NoSQL
+	Firestore --> NoSQL, serverless document db 
 	Datastore --> NoSQL MongoDB
 	GCS --> only for Files
 
 
 6. BigQuery export option is available in Billing console
 
-7. SSL Proxy load balancing is a revers proxy load balancer
+**7. SSL Proxy load balancing is a revers proxy load balancer
 
 8.  Regional --> Highest Expensive class
 	Standard --> costliest Storage, frequent access
@@ -76,33 +112,881 @@ Service Account Role (iam.ServiceAccountUser) --> specific service --> Service A
 	coldline --> accessing very rarely (once per 90 days)
 
 9. CloudSQL is used to launch MySQL or Postgres databse
-	Marketplace provides you with pre-built images which can be launched with just few clicks without any configuration
+
+*** Marketplace provides you with pre-built images which can be launched with just few clicks without any configuration
 
 10. API Library is Standard GCP library to interact Google services
 
 11. App Engine Standard --> ElasticBeanstalk (PHP, Python, Java, Ruby, Go, .NET, nodeJS)
 	App Engine Flexible --> ElasticBeanstalk (for all other languages)
 
-12. usin --no-promote flag while deploying new version of app will not automatically send traffic to new version
+12. using --no-promote flag while deploying new version of app will not automatically send traffic to new version
 
-13. Auto mode VPC can be converted to manual but vice versa is not possible
+***13. Auto mode VPC can be converted to manual but vice versa is not possible
+
+gcloud services enable compute --> enable compute services
+kubectl exec -i -t whizlabs-web-server --/bin/bash
+gcloud iam roles create viewer-role --project venky --file=role-definition.yaml
+vm instances by default have read access to google cloud storage services
+you must create a new node pool in the same cluster and migrate the workload to the new pool
+curl metadata.google.internal/computeMetadata/v1 --> to fetch metadata of VM
+gsutil versioning set on gs://BUCKET
+gcloud compute firewall-rules create "remote-access" --newtwork "venky" --allow tcp:3389
+gcloud container clusters resize my-cluster --num-nodes=3
+gcloud help compute instances create
+gcloud projects add-iam-policy-binding PROJECT-NAME --member "user:bob@xyz.com" --role "roles/editor"  --> 
+
+roles/bigquery.data --> permissions to read, update, delete dataset, but not create new dataset 
+flow logs capture each and every packet flowing within your network
+
 
 14. GKE:
 --------
 	Pod : group of containers
 	StatefulSet: if a container dies, replacement one will have the same hostname and IP address
-	DaemonSet: making sure that one pod is always running on each node and scales automatically.
+	**DaemonSet: making sure that one pod is always running on each node and scales automatically.
 	ReplicaSet: making sure that a desired number of pods are running.
 
+################# Virtual Machines: ##################
+----------------------
 15. VM instances by default have read access to GCS
 
 16. while quering metadata of an instance you must provide header "Metadata-Flavor":"Google"
 
 17. If you want to change the machine type for cluster, you MUST create a new node pool in the same cluster and migrate the work load to the new pool
 
-18. 
+18. EC2 starting script
+-----------------------
+	whoami
+	pwd
+	sudo su
+	apt update 
+	apt install apache2
+	ls /var/www/html
+	echo "Hello World!"
+	echo "Hello World!" > /var/www/html/index.html
+	echo $(hostname)
+	echo $(hostname -i)
+	echo "Hello World from $(hostname)"
+	echo "Hello World from $(hostname) $(hostname -i)"
+	echo "Hello world from $(hostname) $(hostname -i)" > /var/www/html/index.html
+	sudo service apache2 start
+
+19. Bootstrap Startup script in VM:
+-----------------------------------
+#!/bin/bash
+sudo su
+apt update 
+apt -y install apache2
+echo "Hello world from VENKY $(hostname) $(hostname -I)" > /var/www/html/index.html
+
+**20. Instance templates are global, we can create VM in any region
+
+21. using custom images (global resources) (not using boot scripts) we can reduce launch time 
+
+VMs Cost Savings:
+-----------------
+	22. Sustained use discounts
+		Automatic discount for N1 and N2 machine type VMS for more than 25% in a month
+
+	23. Committed used discounts ==> Reserved Instances
+
+	24. Preemptible Instances ==> Spot Instances
+
+Compute Engine: Live Migration & Availability Policy:
+-----------------------------------------------------
+ Live Migration:
+ --------------
+ 	- your running instance is migrated to another host in the same zone
+ 	- Does NOT change any attributes or properties
+ 	- supported instances with local SSDs
+ 	- NOT supported for GPUs and preemptible instances
+
+ Important Configuration Availability Policy:
+ --------------------------------------------
+ 	- Automatic restart: Restart VMs if they are terminated due to non -user initiated reasons (Maintinance events, hardware failures etc..)
+
+ ***You can customize the Machine type (i.e vCPU, RAM etc..)
+ 
+ Monitoring VMs:
+ ----------------
+ 	- Automatic Basic Monitoring is enabled
+ 	- Default Metric: CPU Utilization, Network Bytes (in/out), Disk Throughput/IOPS
+ 	- For Memory Utilization & Disk Spacke Utilization - Cloud Monitoring agent needed.
+
+########## GCloud: CLI for GCP ################
+
+	- Some GCP Serices have Specific CLI tolls
+		- cloud storage --> gsutil
+		- Cloud BigQuery --> bq
+		- Cloud BigTable --> cbt
+		- Kubernetes --> kubectl
+
+	- Connecting to GCP
+		i)  gcloud init 
+		ii) gcloud config list
+
+some commonly used gcloud commands:
+-----------------------------------
+gcloud config list project
+gcloud config configurations list
+gcloud config configurations activate my-default-configuration
+gcloud config list
+gcloud config configurations describe my-second-configuration
+gcloud compute instances list
+gcloud compute instances create
+gcloud compute instances create my-first-instance-from-gcloud
+gcloud compute instances describe my-first-instance-from-gcloud
+gcloud compute instances delete my-first-instance-from-gcloud
+gcloud compute zones list
+gcloud compute regions list
+gcloud compute machine-types list
+ 
+gcloud compute machine-types list --filter zone:asia-southeast2-b
+gcloud compute machine-types list --filter "zone:(asia-southeast2-b asia-southeast2-c)"
+gcloud compute zones list --filter=region:us-west2
+gcloud compute zones list --sort-by=region
+gcloud compute zones list --sort-by=~region
+gcloud compute zones list --uri
+gcloud compute regions describe us-west4
+ 
+gcloud compute instance-templates list
+gcloud compute instance-templates create instance-template-from-command-line
+gcloud compute instance-templates delete instance-template-from-command-line
+gcloud compute instance-templates describe my-instance-template-with-custom-image
+
+
+gcloud config set:
+------------------
+	- gcloud config set --help
+	- gcloud config set SECTION/PROPERTY VALUE
+	core, compute are called SECTION (core is by default available)
+	project, region, zone are called PROPERTIES
+
+gcloud command structure:
+------------------------
+  gcloud GROUP SUB-GROUP ACTION
+
+  gcloud compute instances list
+  gcloud compute zones list
+  gcloud compute regions list
+  gcloud compute machine-type list --filter="zone:us-central1-b"
+  gcloud compute machine-type list --filter="zone:(us-central1-b us-central1-a)"
+
+
+Compute Instances - Default Region and Zone
+-------------------------------------------
+	- Option1 --> gcloud compute project-info add-metadata
+		--metadata =[google-compute-default-region=REGION | google-compute-default-zone=ZONE]
+	-Option2 --> Local gcloud configuration: gcloud config set compute/region REGION
+	-Option3 --> (Command Specific):  --zone or --region in the command
+
+	Execution Priority: Option3 > Option2 > Option1
+
+Instance Groups:
+---------------
+	i) Managed --> Identical VMs created using templates (good for auto scaling, auto healing, patching)
+	ii) Unmanaged --> Different configurations for VMs in same group
+
+Managed Instance Group: (MIG) features
+-----------------------
+	Two types:
+	-----------
+	Stateful MIG:
+	-------------
+	Preserve VM state (InstanceName, attached persisitant disk and metadata), recommended for stateful work loads (Database and data processing apps)
+
+	- Release new application versions without down time
+		- Rolling Update
+		- Canary Deployment
+
+	- Add Load balancer to distribute load
+	- Create instances in Multiple Zones
+	- AutoScaling and Self Healing
+
+
+Rolling Update: Update of instances to the new instance template
+	Maximum Surge: How many instances are added at any point in time
+	Maximum Unavailable: How many instances can be offline during the update
+
+Rolling Restart/Replace: Restart/Replace all the instances in the group
+	- No change in the template
+	- Maximum Unavailable is only availble in this rolling 
+
+
+Creating MIG using gcloud commands:
+-----------------------------------
+gcloud compute instances create my-test-vm --source-instance-template=my-instance-template-with-custom-image
+gcloud compute instance-groups managed list
+gcloud compute instance-groups managed delete my-managed-instance-group
+gcloud compute instance-groups managed create my-mig --zone us-central1-a --template my-instance-template-with-custom-image --size 1
+gcloud compute instance-groups managed set-autoscaling my-mig --max-num-replicas=2 --zone us-central1-a
+gcloud compute instance-groups managed stop-autoscaling my-mig --zone us-central1-a
+gcloud compute instance-groups managed resize my-mig --size=1 --zone=us-central1-a
+gcloud compute instance-groups managed recreate-instances my-mig --instances=my-mig-85fb --zone us-central1-a
+gcloud compute instance-groups managed delete my-managed-instance-group --region=us-central1 
+
+
+**Cloud Run doesn't need a cluster where as GKE needs cluster
+
+App Engine:
+-----------
+Automatic: Automatically scale instances based on the load
+Basic: Instances are created as when requests are received (Zero if no requests)
+Manual: Configure specific instances to run
+
+traffic split
+IP
+Cookie
+Random
+
+
+app.yaml  --> containerized commands
+cron.yaml  --> scheduled cron jobs
+dispatch.yaml  --> manage routing rules
+queue.yaml --> manage task queue
+index.yaml --> indexes for complex quireies
+
+
+############### GKE #########################
+gcloud container cluster --> is used to play with clusters or node pools
+kubectl create deployment --> is to deploy docker images in the containers
+
+If you have micro service and store configuration use configmap
+if you want to store a password use secret
+
+Delete Microservices:
+---------------------
+kubectl delete service
+kubectl delete deployment
+
+Delete the Cluster:
+-------------------
+gcloud containers clusters delete
+
+
+GKE Terminology:
+-----------------
+Cluster: (Group of compute Engine instances)
+---------------------------------------------
+	- Master Node(s) : Manages the cluster
+	- Worker Node(s) : Run your workloads (pods)
+
+Master Node (Control Plane) components:
+---------------------------------------
+	- API Server : Handles all communication for a K8S cluster
+	- Scheduler : Decides Placements of Nodes
+	- Control Manager : Manages deployments & replica sets
+	- etcd : Distributed database stroing the cluster state
+
+Worker Node Components:
+----------------------
+	- Runs your pods
+	- Kubelet : Manages communication with master node(s)
+
+Kuberneties Pods:
+------------------
+	- Smallest deployable unit in Kuberneties
+	- A Pod contains one or more containers
+	- Each Pod is assigned an Ephemeral IP address
+
+	All containers in Pod share:
+	- Network
+	- Storage
+	- IP address
+	- Ports
+	- Volumes (Shared Persisitent disks)
+	POD Status: Running/Pending/Succeded/Failed/Unknown
+
+Kubernetes - Deployment vs Replica set:
+---------------------------------------
+	- A Deployment is created for each microservice
+	kubectl create deployment m1 --image=m1:v1
+	- Deployment manages new releases ensuring zero downtime
+
+	Replica set ensuring that Specific number of pods are running for a specific microservice version
+	kubectl scale deployment m2 --replicas=2
+	- Even if one of the pods killed, replica set will launch a new one 
+
+Note: Deploy V2 of microservices - Creates a new replica set
+	kubectl set image deployment m1 m1=:v2
+
+Kubernetes - Service:
+--------------------
+	- Expose Pods to outside world using a stable IP address
+	- Ensures that the external world does not get impacted as pods go down and come up
+
+	Three Types:
+	------------
+	- ClusterIP: Exposes Services on a cluster-internal IP
+	- LoadBalancer: Exposes Services externally using LB
+	- NodePort: Exposes Services on each Nodes IP at a Static Port
+
+GKE Notes:
+----------
+	- Replicate master nodes across multiple zones for high availability
+	- (REMEMBER) some CPU on the nodes is reserved by Control panel
+	- Kubernetes supports Stateful deployments like Kafka, Redis, ZooKeeper
+	- DaemonSet is used on nodes for log collection or monitoring
+	- GKE (by default) integrates with Cloud Monitoring and Cloud logging
+		Cloud Logging System and Application Logs can be exported to BigQuery or Pub/Sub
+
+Anthos --> Run Kubernetes cluster anywhere
+	- Cloud, Multi-Cloud, and On-premise
+
+
+###################### KMS ################
+Google Managed
+Customer Managed
+Customer Supplied keys
+
+############### Cloud Storage ############ 
+
+Block Storage:
+	- Persistant disk : Network Block Storage (boot disk in VMs)
+		Zonal and Regional
+	- Local SSDs : Local Block Storage (to achieve high performance, not supported by all Machines)
+	Note::: Local SSDs === Instance Store in AWS (temp data, tied to VM life cycle)
+
+File Storage: High Performance file storage
+
+Persistent Disk (PD) has three types:
+	- Standard (HDD) Low cost, low performance
+	- Balanced (SSD) Medium cost, average Performance
+	- SSD (SSD) - High cost, High Performance
+
+Playing with Machine Image:
+----------------------------
+
+Machine Image is different form the Image
+Machime image contains everything you need to create 
+	- Configuration
+	- Metadata
+	- Permissions
+	- Data from one or more disks
+
+
+L0 (Infrastructure level) Account Level
+L1 Application Level
+
+
+####### Object Versioning##################
+Prevent accidental deletion and provide history
+	- Can be turned on/off at any time
+	- If you delete live object it becomes noncurrent object
+	- If you delete noncurrent object version, it is deleted.
+
+	Older versions are uniquely identified by (object key + a generation number)
+
+To speed up large uploads (ex: 100 GB) --> Parallel composite upload
+
+
+############## IAM #############################
+
+IAM Roles:
+----------
+Three types of roles available
+	1. Basic Roles (Premitive Roles): (Owner, Editor, Viewer)
+		- Viewer --> roles.viewer --> Read only actions
+		- Editor --> roles.editor --> Viewer + Edit actions
+		- Owner --> roels.owner --> Editor + Manage Roles and Permissions + BIlling
+		Basic roles are not recommended in PRODUCTION
+
+	2. Predefine Roles: Fine grained roles created and managed by google
+	------------------
+		- Different roles for different purposes
+		- Ex: Storage Admin, Storage Object Admin, Storage Object Viewer, Storage Object Creator.
+
+	3. Custom Roles:
+	----------------
+		- When predefined roles are not suffiecient we can use this.
+
+
+*** VM instance with default service account in Project A needs to acces cloud storage bucket in Project B?
+*** In Project B, add the service account from Project A And assign Storage Object Viewer Permission on the bucket.
+
+Cloud Firestore(Data Store) vs Cloud BigTable:
+----------------------------------------------
+Cloud Datastore: (Manged serverless NoSQL document database)
+---------------
+	- Provides ACID transactions, SQL like queiries, indexes
+		Designed for transactional mobile and web applications
+
+	- Firestore (next version of Datastore) adds
+		Strong consistency
+		Mobile and web client libraries
+
+	- Recommended for small to medium databases (0 to few TBs)
+
+Cloud BigTable: Managed, scalable NoSQL wide column database:
+--------------
+	- Not serverless, you need to create instances
+	- Recommended for data size > 10 Terabytes to PB
+	- Recommended for Streaming (IOT), large analytical and operational workloads
+	- Supports only Single-row transactions
+
+GCP Table Summary:
+------------------ 
+1. A startup with quickly evolving schema   --> Cloud Datastore/Firestore
+2. Non relational DB with less storage (10GB) --> Cloud Datastore
+3. Transactional GLOBAL database with predefined schema needing to process million of transactions per second --> Cloud Spanner
+
+4. Transactional LOCAL database processing thousands of transactions per second --> Cloud SQL
+
+5. Cache --> MemoryStore
+
+6. Database for analytics processing of peta bytes of data ---> BigQuery (DATA WAREHOUSE)
+
+**7. Huge Volumes of Stream data or time series data from IOT devices --> BigTable
+
+
+############# MONITORING ####################
+Install logging agent (based on fluentd) to VMs
+(Recommended) Run logging agent on all VM instances
+
+Ingest logs from on-premise:
+-----------------------------
+(Recommended) use the BindPlane tool from Blue Medora
+use the logging API
+
+
+Cloud Audit logs:
+----------------
+	- Admin Activity Logs (VM creation, patching, S3 bucket cration, object modification etc..)
+	- Data Access Logs (List resources, read operations etc..)
+	- System Event Logs (Host maintinance, auto restart, instance preemption)
+	- Policy Denied Logs (Security Policy Violation)
+
+Logging Router:
+---------------
+Two types of log buckets are available
+	i) _Required: Holds Admin activity, System events & Access Transparency Logs (Retained for 400 days)
+			- Zero charge
+			- You cannot delete the bucket
+			- you cannot change retention period
+
+	ii) _Default: All other logs (retained for 30 days)
+			- You are billing based on the Cloud Logging pricing
+			- You cannot delete the bucket but you can disable the default route sink to disable ingestion
+			- You can edit retention settings (1 day to 10 years)
+
+Cloud Profiler : Performance bottle necks in Production
+--------------
+	- Profiler agent should be isntalled
+	- Profiler Interface (for Visualisation)
+
+Cloud Debugger: Debug a problem in production by executing step by step
+--------------
+
+
+Cloud Trace: Trace a request across multiple web services
+------------
+
+Cloud Logging: Logs for a specific request
+-------------
+
+
+### SQL Databases  
+----------------
+	Cloud SQL:
+	----------
+	- Local database
+	- Cheap compared to Cloud Spanner
+	- Have Read replica and Standby instance
+	- Availability 99.95%
+
+	Cloud Spanner:
+	-------------
+	- Global (Regional and Multi-Regional configuration)
+	- SQL, Fully managed, mission-critical, High Availabilty (99.999%)
+	- VERY EXPENSIVE (Pay for nodes and storage)
+	- Cloud spanner scales horizontally for read and writes
+	- Scales to PB with automatic sharding
+
+	Cloud BigQuery:  (SQL databse, Data warehouse)
+	-----------------------------
+	- managed analytical database
+	- Optimized for write once and read many operations
+
+
+### NoSQL Databases:
+---------------------
+
+	Cloud BigTable: (NoServerless, NoSQL DB, wide-column DB, very low latency)
+	----------------->IOT, Analytics, Time series, High perfomance
+		- Petabyte scale, wide column NoSQL DB(HBase API compatible)
+		- Desgined for huge volumes
+			- IOT Streams, Analytics, operational, Time Series Data etc
+		- Handle million of read/write TPS at very low latency
+		- Single row transactions (multi row transactions NOT supported)
+		- NOT Serverless (Scales horizontally with multiple Nodes)
+		- cbt is the command line tool
+
+	Cloud Datastore: (Manged serverless NoSQL document database)
+	---------------
+	- Provides ACID transactions, SQL like queiries, indexes
+		Designed for transactional mobile and web applications
+
+	- Firestore (next version of Datastore) adds
+		Strong consistency
+		Mobile and web client libraries
+
+	- Recommended for small to medium databases (0 to few TBs)
+	- 
+
+
+Memorystore:  (fully managed with 99.9% SLA)
+-------------
+	i) Memcached:
+	-------------
+		- Reference data
+		- database query caching
+		- session store etc
+
+	ii) Redis:
+	----------
+		- Gaming Leader Boards, Player Profiles, In memory Stream Processings etc
+
+
+
+Cloud Dataproc: (Spark, Hadoop, Hive, BigData Jobs)
+---------------
+	- managed Spark/Hadoop CLuster service
+	- OnPremise Spark cluster to GCP
+
+Cloud Data Studio:
+-----------------
+	- Reporting and analytics tool
+
+Cloud Data Flow:
+----------------
+	- Batch and stream processing platform
+
+
+
+Practice Test 1:
+----------------
+
+1. Folders are used to group resources that share common IAM Policies
+	Service accounts are specific to Projects
+
+2. Access is granted to Cloud Storage using IAM or ACLs
+	When uniform bucket-level access is applied, users only have access through IAM roles and permissions
+
+3. Cloud Data Funsion is a managed service designed for building data transformation pipelines
+
+4. Shielded VMs are high levels of security.
+
+5. VPC Network Peering allows VM instances to communicate across organization
+
+6. gsutil rewrite -s nearline gs://BUCKET-NAME to change the bucket storage class
+
+7. glcoud init and gcloud auth login are the commands to use authorize access
+
+8. URL maps specify direct request to a particular service
+
+9. Routes are used to specify paths to destination IP address outside a subnet
+
+10. GKE deployments are kubernates abstractions use kubctl apply -f app.yaml
+
+11. Kuberneties Engine collects the log data written to STDOUT and STDERR
+
+12. An INSTANCE TEMPLATE is needed to enable compute engine to automatically add instances to MIG
+
+13. The source and cloned PD must be in same zone, region, and same type
+
+14. gsutil mv --> to rename a file in the Cloud Storage
+
+15. Sole tenant node --> only VMs from the same project will run on the node
+
+16. Kuberneties cluster for high availablity cluster type is REGIONAL
+
+17. gcloud datastore export gs://BACKUP-NAME --async
+
+18. gcloud config configurations create --> to create configurations
+
+19. Enable Cloud Operations for GKE is to use parameter --enable-stackdriver-kubernetes
+
+20. gcloud container images list --> to view metadata about existing container images
+
+21. gcloud compute snapshot describe --> shows information about sanpshots
+
+
+
+
+
+Practice Test 2:
+----------------
+1. Auto VPC Mode creates subnets in each region automatically with CIDR (10.128.0.0./9)
+
+2. bq ls --> to list all the data sets in the project
+
+3. images families are used to group related images together so roll forward or back between version
+
+4. gcloud sql connect [INSTANCE-ID] --user=root
+
+5. Files are written to servers within cloud storage system based on filenames. Lexically close file names are written to the same server. This can lead to hotspoting,which is an imbalance in work load that has a small number of servers.
+
+6. Manage Projects in GCP all Permission needed.
+	- resourcemanager.projects.get
+	- resourcemanager.projects.getIamPolicy,
+	- resourcemanager.projects.setIamPolicy.
+
+7. gsutil stat gs://BUCKET-NAME/OBJECT-NAME --> shows the metadata of the object
+
+8.	roles/iam.roles.create --> Permissions required to create custom roles
+	roles/iam.ServiceAccountUser  --> Grant an Identity access to a service account
+
+9. When Cloud Run starts a container, it creates environment variables
+	- K_Configuration --> Configuration that created the container
+	- K_Rivision  
+	- K_Service
+	- Port
+
+10. App Engine Configuration commands:
+--------------------------------------
+	app.yaml  --> containerized commands
+	cron.yaml  --> scheduled cron jobs
+	dispatch.yaml  --> manage routing rules
+	queue.yaml --> manage task queue
+	index.yaml --> indexes for complex quireies
+
+11. gcloud compute images list --project windows-cloud --no-standard-images  --> will list windows server images
+
+
+Whiz Practice Test 2:
+---------------------
+1. gcloud auth list --> gives active account name
+	gcloud config list --> gives all properties of active configuration
+	gcloud project list --> gives all active projects
+
+2. CLI   list will give all the items
+	CLI   describe will give only particular item info
+
+3. BigQuery and GCS supports Stackdriver logging
+
+4. sudo apt-get install kubectl  --> to isntall kubectl on ubuntu
+
+5. gcloud deployment-manager deployments list 
+
+6. Cloud SQL supports --> MySQL, PostgreSQL, SQL server
+
+7. stackdriver logging is a native GCP solution for storing logs. it stores data for only 30 days
+
+8. Binary logging contains "events" that describe database changes such as table creation operations or changes to table data
+
+**9. Cloud SQL stores only 7 automated backups by default
+
+**10. Cloud SQL supports only vertical scalling, support ACID transactions
+	Cloud Spanner supports Horizontal scalling, support ACID Transactions
+
+11. kubectl get nodes
+
+12. Cloud functions dependencies could be resolved by using the pip package maanger requirements.txt file  or packaging local dependencies along side your function.
+
+**13. Disk can only be upgraded in terms of size
+
+14. Cloud Router === Route Table
+
+15. Stackdriver logging --> allows store, search, analyze, monitor, alert on log data and events
+	stackdriver porfiler --> continuously analyzing the performance of CPU or memory intensive functions executed across an application
+	Stackdriver debugger --> allows inspect the state of application in real time, without stopping or slowing down it
+
+**16. Sanpshot schedule can only be added to the disk
+
+17. Failed to negotiate an api version in kubectl, use command gcloud auth application -default login
+
+18. For IAM best practices create custom role with specific permissions and attach it to users
+
+**19. App Engine stores versions Free app 15 and paid app 210
+
+20. Billing alert notification will be sent to billing admins and users
+
+21. Cloud Datastore -automatic scaling, high performance, ease of development, schemaless, 
+    1 TB of data
+
+22. unders stackdriver logging there is a module *Audit log* used for Audit purpose
+	Activity logs are now deprecated.
+
+23. Any instance launched using a tag or service account will have a firewall attached automatically. provided there is a firewall rule automatically attached.
+
+24. 
 	
+Whiz Practice Test 3:
+----------------
+
+1. Type, Bandwidth, Execution time and invocations per month are used to calculate pricing
+
+2. Firebase is scalable storage used for mobile app
+
+3. BigTable peta-byte scale, fully managed, NoSQL
+
+	BigQuery serverless, highly scalable cost effective data warehouse
+
+	Spanner is a fully managed relational database
+
+**4. In order to mount a persistent disk, you need to create a PersistentVolumeClaim after creating a persisitentVolume and then attach PersisitentVolumeClaim to the POD
+
+4. kubectl autoscale rc foo --max=10 --cpu-percent=80
+
+**6. storage.objects.setIamPolicy --> update object ACL
+
+**7. cost table gives a detailed tabular view of monthly costs for a given service
+	Report : Lets view your costs at glance to discover and analyze trends
+	Cost Breakdown : Gives a waterfall view of your costs
+	Billing Export : Monitoring, analyzing and, optimizing costs
+
+**8. Log sinks can be exported to Cloud Storage, Pub/Sub, and BigQuery.
+
+9. Network load balancer can handle TCP, UDP, and SSL
+
+10. Gradual traffic migration is not supported in Flexible environment
+
+11. You can only attach 24 local SSD devices to a single VM 
+	(24 * 375 (Each SSD size) == 9 TB)
+
+12. Compute Engine Instance Admin Role --> gives permission on instance, disk, snapshot
+	Compute Engine Admin Role --> gives extra access to network resources as well
+
+13. VM migration to another region : by creating a snapshot of the disk and moving it to different region and launch there
+
+14. IP range 172.17.0.0/16 is reserved for docker bridge network. any instances creating using this private IP will not reachable
+
+15. Cloud storage is an option for share read only data across multiple instances with high performance and no edge caching
+
+16. gcloud config list  --> will give properties of currently active configurations
+
+17. Persistent disk supports upto 15K - 60K IOPS per instance
+
+18. us and eu supported under multi-region not in dual region
+
+19. Automatic scaling has free daily usage of 28 hours
+	Manual and Basic has 8 hours usage
+
+20. By default every object has metageneration number 1, irrespective of versioning enabled or not.
+
+21. When Updating an MIG up to 1000 instances can be specified in single request
+
+22. GCP functions invoke defualt limit is 1000
+
+23. lift and shift of containers ---> Kubernaties engine
+
+Whizlabs practice test 4:
+-------------------------
+1. gcloud iam roles update editor --project-id --stage disabled
+
+2. gcloud auth list --> list the name of active account 
+
+3. 
+
+
+gcloud:
+-------
+gcloud auth list --> list the active account name
+gcloud config list --> list all the properties of active configuration
+gcloud compute networks list
+gcloud compute networks describe NAMW --format json
+gcloud compute networks subnets create subnet1 --network net1 --range 10.5.4.0/24
+gcloud compute addresses create region us-west2-a vpn-1-static-ip
+gcloud compute addresses list
+gcloud compute addresses describe
+
+gcloud dns record-sets list --zone
+
+gcloud compute firewall-rules describe/create/update
+
+
+Kubectl command line structure:
+-------------------------------
+get and describe are the two verbs
+
+kubectl edit/delete node NODE-NAME
+kubectl edit/delete pod POD-NAME
+
+kubectl create -f something.yaml
+kubectl apply -f something.yaml
+kubectl create deploy DEPLOY-NAME --image=nginx
+
+kubectl edit/delete deploy DEPLOY-NAME
+**kubectl expose      deploy DEPLOY-NAME --port=80 --type=NodePort
+kubectl scale       deploy DEPLOY-NAME --replicas=5
+
+kubectl create deployment m1 --image=m1:v1
+kubectl scale deployment m2 --replicas=2
 
 
 
+GKE commands:
+-------------
 
+gcloud auth configure-docker
+gcloud container clusters list  /  create  /    get-credentials
+gcloud container images list-tags
+
+gcloud kms
+gcloud logging
+gcloud sql backups describe
+gcloud sql export sql
+
+
+gsutil:
+--------
+
+1. gsutil ls -l gs://my-awesome-bucket/kitten.png
+
+	-1 flag is some details about one of your images
+
+2. gsutil iam ch allUsers:objectViewer gs://my-bucket
+
+	ch is grant all users read permissions 
+
+	gsutil iam ch -d allUsers:objectViewer gs://my-bucket
+
+	-d is used to remove access to all
+
+3. gsutil iam ch user:venky@gmail.com:objectCreator, objectViewer gs://my-bucket
+
+	gsutil iam ch -d user:venky@gmail.com:objectCreator, objectViewer gs://my-bucket
+
+4. gsutil rm gs://my-awesome-bucket/kitten.png
+
+5. gsutil mv --> to rename a file in the Cloud Storage
+
+6. gsutil stat gs://BUCKET-NAME/OBJECT-NAME --> shows the metadata of the object
+
+7. gsutil rewrite -s nearline gs://BUCKET-NAME to change the bucket storage class
+
+
+GCP Load balancing:
+--------------------
+	i) internal 
+	ii) External
+
+Internal:
+---------
+	a) TCP and UDP traffic ---> Internal TCP/UDP Load balancing
+	b) HTTP or HTTPS traffic --> Internal HTTP(S) Load balancing
+
+
+External:
+---------
+	a) UDP, ESP, ICMP --> External TCP/UDP Network Load balancing
+	b) HTTP or HTTP(S) (Regional/Global) --> Regional/Global External HTTP(S) Load balancer
+	c) TCP Traffic:
+	---------------
+		- SSL offload --> SSL Proxy
+		- Global --> TCP Proxy
+		- Preserve Client IP address (YES) --> External TCP/UDP Netwrok load balancing
+		- Preserve Client IP address (NO)  --> TCP Proxy
+
+
+gcloud config
+VM relocation
+
+
+gcloud init            --->                    (create/modify new configurations))
+gcloud config list     --->                    (shows currently, active configurations)  
+gcloud config list project/account    -->      (gives current config project name)
+gcloud config configurations list     -->      (list all the configurations)
+gcloud config configurations activate first-configuration
+gcloud config configurations describe first-configurations

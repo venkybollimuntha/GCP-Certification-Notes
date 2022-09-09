@@ -72,6 +72,73 @@ Monitoring Prod workloads
 
 19. Cloud Debugger --> Investigate the behaviour of code in production
 
-20. Serverless services --> Cloud Run, Workflow, App Engine
+20. Serverless services --> Cloud Run, Workflow, App Engine, Knative, Eventarc
 
-21. 
+21. Zonal Persisitent disk, Local SSD is suitable for block storage
+
+22. Clous Storage is suitable for object storage
+
+23. File Storage: ideal for applications running on GKE clusters
+
+24. Google Cloud Armor
+-----------------------
+	- protects infrastructure and applications network and/or protocol based DDoS attacks and application attacks
+
+25. Network Intelligence Center:
+--------------------------------
+	- Provides a console for Network visibility, monitoring and troubleshooting
+
+26. Transfer Appliance :
+-------------------------
+	- Moving 100s of TBs to PB to GCloud
+
+27. Cloud Storage Transfer Service --> Moving 100s of TB data to GCloud
+
+28. Cloud Data Loss Prevention --> fully managed service can help customers discover, classify and protect the sensitive data.
+
+
+Site Reliable Engineer: (SRE)
+-----------------------
+	Focuses on Operational and scalability problem and availability to users
+
+29. Cloud Router --> route exchange between Cloud VPC and on-prem network
+
+30. Traffic Director --> implementing load balancing and configuring traffic control
+
+31. Network Conntectivity Center --> Customers to use its own network for required purposes
+
+32. Google Private access --> which only have internal IP address
+
+33. Database Migration Service doesnot support SQL Server DB migration.
+
+34. Google cloud Resource Hierarchy:  Organization --> Folders --> Projects --> Resources
+
+35. Regions--> Zones --> DataCenters
+
+36. Support case priorities:
+	P1 --> Infrastructure unusable, causing potential data integrity, revenue loss etc
+	P2 --> Infrastructure performance degraded, productivity decrease, danger of revenue loss
+	P3 --> Business impact is low, no-user visible impact
+	P4 --> Buiness impaact or techinical business is low to null
+
+37. Cloud Storage --> Publicly stored objects are cached in the Cloud Storage Network by default
+
+38. Vertex AI helps build, deploy and scale ML models faster within a unified AI platform
+
+39. Cloud Translation helps build multilingual applications with the help of machine traslation
+
+40. Natural Languagge AI --> classify unstructure data and performs sentiment analysis
+
+41. Apigee sense helps protects APIs from
+	- Unwanted reqeust traffic
+	- Suspicious client requests
+	- Data crawling
+42. Bare metal solution helps customers run a specialized load, including third party virtualization and applications running low level access
+
+43. Modes of operation in GKE are Standard, Predefined, AutoPilot
+
+44. Google Infrastructure Security Layers:
+	Operational Security --> Internet communication --> Storage Services --> User Identity --> Service Deployment --> Hardware Infrastructure 
+
+
+
